@@ -17,12 +17,17 @@ typedef enum
 
     CAN_YAW_MOTOR_ID = 0x12,
     CAN_PIT_MOTOR_ID = 0x11,
-		CAN_Fric1_MOTOR_ID = 0x206,
-    CAN_TRIGGER_MOTOR_ID = 0x207,
-		CAN_Fric2_MOTOR_ID = 0x208,
+
+	CAN_Fric1_MOTOR_ID = 0x205,
+	CAN_Fric2_MOTOR_ID = 0x206,
+	CAN_Fric3_MOTOR_ID = 0x207,
+	CAN_Fric4_MOTOR_ID = 0x208,
+
+	CAN_TRIGGER_MOTOR_ID = 0x207,
+
     CAN_GIMBAL_ALL_ID = 0x1FF,
-		
-		CAN_CHASSIS_POWER_ID = 0x123,
+
+	CAN_CHASSIS_POWER_ID = 0x123,
     // CAN_DM_MOTOR_ID = 0x000,	
 } can_msg_id_e;
 
@@ -57,10 +62,9 @@ extern const DMMotor_measure_t *get_Yaw_Gimbal_Motor_Measure_Point(void);
 extern const DMMotor_measure_t *get_Pitch_Gimbal_Motor_Measure_Point(void);
 //返回trigger电机变量地址，通过指针方式获取原始数据
 extern const motor_measure_t *get_Trigger_Motor_Measure_Point(void);
-//返回fric1电机变量地址，通过指针方式获取原始数据
-extern const motor_measure_t *get_Fric1_Motor_Measure_Point(void);
-//返回fric2电机变量地址，通过指针方式获取原始数据
-extern const motor_measure_t *get_Fric2_Motor_Measure_Point(void);
+
+//返回fric电机变量地址，通过指针方式获取原始数据
+extern const motor_measure_t *get_Fric_Motor_Measure_Point(uint8_t i);
 
 //返回底盘电机变量地址，通过指针方式获取原始数据,i的范围是0-3，对应0x201-0x204,
 extern const motor_measure_t *get_Chassis_Motor_Measure_Point(uint8_t i);

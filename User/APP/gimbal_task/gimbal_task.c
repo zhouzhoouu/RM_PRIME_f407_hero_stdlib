@@ -67,7 +67,7 @@ static Gimbal_Control_t gimbal_control;
 
 //发送的can 指令
 static int16_t Yaw_Can_Set_Current = 0, Shoot_Can_Set_Current = 0;
-static int16_t Fric1_Set_Current = 0,Fric2_Set_Current=0;
+static int16_t Fric_Set_Current[4];
 static fp32 Pitch_Can_Set_Current = 0;
 //传入UI更新的全局变量
 uint8_t shoot_state=0;
@@ -141,8 +141,11 @@ void GIMBAL_task(void *pvParameters)
         GIMBAL_Set_Contorl(&gimbal_control);                 //设置云台控制量
         GIMBAL_Control_loop(&gimbal_control);                //云台控制PID计算
         Shoot_Can_Set_Current =shoot_control_loop();        //射击任务控制循环
-				Fric1_Set_Current = fric1_control_loop(); 						 //摩擦轮控制循环
-				Fric2_Set_Current = fric2_control_loop(); 						 //摩擦轮控制循环
+
+        for (int i = 0; i < 4; ++i) {
+            Fric_Set_Current[i] = fric_control_loop(i);      //摩擦轮控制循环
+        }
+
 
 #if YAW_TURN
         Yaw_Can_Set_Current = -gimbal_control.gimbal_yaw_motor.given_current;
@@ -161,7 +164,7 @@ void GIMBAL_task(void *pvParameters)
 #endif
 
         //CAN2 摩擦轮
-        CAN_CMD_Fric(-Fric1_Set_Current,Fric1_Set_Current, 0, Fric2_Set_Current);
+        CAN_CMD_Fric(Fric_Set_Current[0],Fric_Set_Current[1], Fric_Set_Current[2], Fric_Set_Current[3]);
 				//printf("FRIC_CURRENT:%d,%d\n",Fric1_Set_Current,Fric2_Set_Current);
 
 				//CAN1 拨弹轮
